@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import TodoForm from "./TodoForm"
 import TodoItem from "./TodoItem"
 import TodoSearch from "./TodoSearch"
-import { store, index, update } from "../../api/todos"
+import { store, getAll, update } from "../../api/todos"
 
 function TodoList() {
   const [todos, setTodos] = useState([])
@@ -10,7 +10,7 @@ function TodoList() {
 
   useEffect(() => {
     async function fetchData() {
-      const data = await index(searchQuery)
+      const data = await getAll(searchQuery)
       setTodos(data)
     }
 
@@ -38,18 +38,17 @@ function TodoList() {
     )
   }
 
-  // const deleteTodo = (id) => {
-  //   destroy(id)
-  //   setTodos(todos.filter((todo) => todo.id !== id))
-  // }
-
   return (
     <>
-      <TodoForm onAdd={addTodo} />
-      <TodoSearch onSearch={handleSearch} />
-      {todos.map((todo) => (
-        <TodoItem key={todo.id} item={todo} onToggle={toggleTodo} />
-      ))}
+      <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+        <TodoForm onAdd={addTodo} />
+        <TodoSearch onSearch={handleSearch} />
+        <div>
+          {todos.map((todo) => (
+            <TodoItem key={todo.id} item={todo} onToggle={toggleTodo} />
+          ))}
+        </div>
+      </div>
     </>
   )
 }

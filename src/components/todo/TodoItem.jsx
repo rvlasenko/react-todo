@@ -11,12 +11,14 @@ const TodoItemStyled = styled.div`
 `
 
 function TodoItem({ item, onToggle }) {
+  const { id, completed, title } = item
+
   return (
     <TodoItemStyled>
       <label>
-        <Checkbox checked={item.completed} onChange={() => onToggle(item.id)} />
+        <Checkbox checked={completed} onChange={() => onToggle(id)} />
       </label>
-      <Link to={`/task/${item.id}`} style={{ flex: 1, color: "inherit" }}>
+      <Link to={`/task/${id}`} style={{ flex: 1, color: "inherit" }}>
         <span
           style={{
             display: "-webkit-box",
@@ -25,7 +27,7 @@ function TodoItem({ item, onToggle }) {
             overflow: "hidden",
           }}
         >
-          {item.title}
+          {title}
         </span>
       </Link>
     </TodoItemStyled>

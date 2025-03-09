@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { index, update, destroy } from "../../api/todos"
+import { getOne, update, destroy } from "../../api/todos"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
 import Button from "../ui/Button"
 import Form from "../ui/Form"
-import TextInput from "../ui/TextInput"
+import Input from "../ui/Input"
 
 const Navigation = styled.div`
   display: flex;
@@ -23,22 +23,32 @@ const ButtonGroup = styled.div`
   margin-top: 20px;
 `
 
+const ErrorText = styled.p`
+  color: #ff4444;
+  font-size: 14px;
+  margin-top: 0;
+`
+
 function TodoDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
   const [todo, setTodo] = useState({})
   const [isEditing, setIsEditing] = useState(false)
 
-  const { register, handleSubmit, reset } = useForm({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       title: "",
-      completed: false,
     },
   })
 
   useEffect(() => {
     async function fetchData() {
-      const data = await index("", id)
+      const data = await getOne(id)
       setTodo(data)
 
       reset({
@@ -72,8 +82,22 @@ function TodoDetail() {
           onSubmit={handleSubmit(handleUpdate)}
           style={{ flexDirection: "column" }}
         >
-          <label htmlFor="title">Title</label>
-          <TextInput type="text" id="title" {...register("title")} />
+          <Input
+            label="Title"
+            type="text"
+            id="title"
+            {...register("title", {
+              required: "Title is required",
+              minLength: {
+                value: 3,
+                message: "Type at least 3 characters",
+              },
+            })}
+          />
+
+          {errors.title && (
+            <ErrorText role="alert">{errors.title?.message}</ErrorText>
+          )}
 
           <ButtonGroup>
             <Button type="submit">Save</Button>

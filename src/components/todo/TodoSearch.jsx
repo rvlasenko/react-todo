@@ -1,7 +1,8 @@
 import { useState } from "react"
 import Form from "../ui/Form"
-import TextInput from "../ui/TextInput"
 import Button from "../ui/Button"
+import Input from "../ui/Input"
+import Spacing from "../ui/Spacing"
 
 function TodoSearch({ onSearch }) {
   const [value, setValue] = useState("")
@@ -22,16 +23,18 @@ function TodoSearch({ onSearch }) {
 
   return (
     <Form onSubmit={onSubmit}>
-      <TextInput
-        type="text"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder="What are you looking for?"
-      />
-      <Button type="submit">Search</Button>
-      <Button type="button" onClick={handleResetSearch}>
-        Reset
-      </Button>
+      <Spacing gap={8}>
+        <Input
+          type="text"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="What are you looking for?"
+        />
+        <Button type="submit">Search</Button>
+        <Button type="button" onClick={handleResetSearch}>
+          Reset
+        </Button>
+      </Spacing>
     </Form>
   )
 }
