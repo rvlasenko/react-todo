@@ -1,7 +1,7 @@
 import { useState } from "react"
-import Form from "./ui/Form"
-import TextInput from "./ui/TextInput"
-import Button from "./ui/Button"
+import Form from "../ui/Form"
+import TextInput from "../ui/TextInput"
+import Button from "../ui/Button"
 
 function TodoForm({ onAdd }) {
   const [text, setText] = useState("")
